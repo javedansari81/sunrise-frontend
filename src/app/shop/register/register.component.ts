@@ -26,6 +26,7 @@ export class RegisterComponent {
   }
   registrationForm: FormGroup
   IsRegistrationSuccess: boolean = false
+  hasSubmitted: boolean = false;
 
   constructor(
     private fb: FormBuilder,
@@ -63,6 +64,7 @@ export class RegisterComponent {
         (response) => {
           console.log('User added successfully', response)
           this.IsRegistrationSuccess = true
+          this.hasSubmitted = true;
           setTimeout(() => {
             this.router.navigate(['/login'])
           }, 2000) // Redirect to login after 2 seconds
@@ -71,6 +73,7 @@ export class RegisterComponent {
         },
         (error) => {
           console.error('Error adding user', error)
+          this.IsRegistrationSuccess = false
         },
       )
     }
