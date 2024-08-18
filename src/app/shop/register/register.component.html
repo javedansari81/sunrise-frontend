@@ -117,12 +117,12 @@
 									</div>
 
 									<!-- Success message -->
-									<div *ngIf="IsRegistrationSuccess" class="alert alert-success text-center">
+									<div *ngIf="hasSubmitted && IsRegistrationSuccess" class="alert alert-success text-center">
 										Registration successful! Redirecting to login page...
 									</div>
 
 									<!-- Error message -->
-									<div *ngIf="!IsRegistrationSuccess" class="alert alert-danger text-center">
+									<div *ngIf="hasSubmitted && !IsRegistrationSuccess" class="alert alert-danger text-center">
 										Registration failed. Please try again.
 									</div>
 

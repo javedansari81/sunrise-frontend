@@ -55,9 +55,7 @@ export class LoginComponent implements OnInit {
       const { email, password } = this.loginForm.value;
       this.authService.login(email, password).subscribe(
         (response) => {
-          // Store token and user details in localStorage or a secure place
-          localStorage.setItem('access_token', response.access_token);
-          localStorage.setItem('currentUser', JSON.stringify(response.user)); // Store user details
+          this.authService.setToken(response);
           this.checkLoginStatus(); // Update the component state after login
           this.router.navigate(['/']); // Redirect after login
         },
@@ -69,17 +67,15 @@ export class LoginComponent implements OnInit {
   }
 
   checkLoginStatus() {
-    const token = localStorage.getItem('access_token');
-    this.isLoggedIn = !!token;
+    this.isLoggedIn = this.authService.isLoggedIn();
     if (this.isLoggedIn) {
-      this.user = JSON.parse(localStorage.getItem('currentUser') || '{}');
+      this.user = this.authService.getUser();
     }
   }
 
   logout() {
-    localStorage.removeItem('access_token');
-    localStorage.removeItem('currentUser');
-    this.checkLoginStatus(); // Update the component state after logout
+    this.authService.logout();
     this.router.navigate(['/login']); // Redirect to login page after logout
+    this.isLoggedIn = false;
   }
 }
