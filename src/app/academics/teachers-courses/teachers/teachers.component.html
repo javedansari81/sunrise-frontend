@@ -12,7 +12,8 @@
       <!-- Our Team -->
       <div class="section-full content-inner">
         <div class="container">
-          <div class="row">
+
+          <div *ngIf="!isAdmin" class="row">
 
             <div *ngFor="let data of teachersData" class="col-lg-3 col-md-6 col-sm-6">
               <div class="dlab-box m-b30 dlab-team1">
@@ -43,7 +44,39 @@
                 </div>
               </div>
             </div>
+
           </div>
+
+
+          <!-- admin access -->
+          <div *ngIf="isAdmin">
+            <ul class=" ">
+              <li *ngFor="let data of teachersData"
+                class="d-flex justify-content-between align-items-center my-3  shadow p-3  bg-body rounded">
+
+                <div class="">
+                  <h4 class="dlab-title">
+                    <span>Name</span>:
+                    <a [routerLink]="['/teachers-profile', data._id]">{{ data.name }}</a>
+
+                  </h4>
+                  <div>
+                    <span class="dlab-title">Position</span>:
+                    <span class="dlab-position">{{ data.position }}</span>
+                  </div>
+                </div>
+
+                <div>
+                  <button type="button" class="btn btn-outline-warning ">Edit</button>
+                  <button type="button" class="btn btn-outline-danger ml-1">Delete</button>
+
+                </div>
+              </li>
+            </ul>
+          </div>
+
+
+
         </div>
       </div>
       <!-- Our Team END -->
