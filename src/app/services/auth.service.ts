@@ -19,16 +19,16 @@ export class AuthService {
   }
 
   getUser() {
-    return JSON.parse(localStorage.getItem('user') || '{}')
+    return JSON.parse(localStorage.getItem('currentUser') || '{}')
   }
 
   getToken() {
     return localStorage.getItem('token')
   }
 
-  setToken(userResponse: any){
-    localStorage.setItem('access_token', userResponse.access_token);
-    localStorage.setItem('currentUser', JSON.stringify(userResponse.user)); // Store user details
+  setToken(userResponse: any) {
+    localStorage.setItem('access_token', userResponse.access_token)
+    localStorage.setItem('currentUser', JSON.stringify(userResponse.user)) // Store user details
   }
 
   isLoggedIn(): boolean {
