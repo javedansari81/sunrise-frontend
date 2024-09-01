@@ -1,167 +1,143 @@
-<div class="page-wraper">
-    <!-- header -->
-    <app-header-light7></app-header-light7>
-    <!-- header END -->
-    <!-- Content -->
-    <div class="page-content bg-white">
-        <!-- inner page banner -->
-        <app-banner1 [data]="banner"></app-banner1>
-        <!-- inner page banner END -->
-        <!-- contact area -->
-        <div class="section-full content-inner shop-account">
-            <!-- Product -->
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-12 text-center">
-                        <h2 class="font-weight-700 m-t0 m-b40">ADD NEW TEACHER</h2>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-lg-12 m-b30">
-                        <div class="p-a30 border-1 max-w750 m-auto">
-                            <div class="tab-content">
-                                <form [formGroup]="teacherForm" (ngSubmit)="addTeacher()" class="tab-pane active">
-                                    <h4 class="font-weight-700">TEACHER INFORMATION</h4>
 
-                                    <div class="form-group">
-                                        <label for="name" class="font-weight-700">Name *</label>
-                                        <input id="name" formControlName="name" placeholder="Name" type="text" required
-                                            [ngClass]="{ error: getControl('name')?.errors && getControl('name')?.touched }">
-                                        <div *ngIf="getControl('name')?.errors && getControl('name')?.touched">
-                                            <small class="text-danger" *ngIf="getControl('name')?.errors?.['required']">
-                                                Name is required.
-                                            </small>
-                                        </div>
-                                    </div>
+<div class="page-content bg-white">
+    <div class="row">
+        <div class="col-lg-12 text-center">
+            <h2 class="font-weight-700 m-t0 m-b40">{{this.data.mode}} Teacher</h2>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-12 m-b30">
+            <div class="p-a30 border-1 max-w750 m-auto">
+                <div class="tab-content">
+                    <form [formGroup]="teacherForm" (ngSubmit)="saveTeacher()" class="tab-pane active">
+                        <h4 class="font-weight-700">TEACHER INFORMATION</h4>
 
-                                    <div class="form-group">
-                                        <label for="age" class="font-weight-700">Age *</label>
-                                        <input id="age" formControlName="age" placeholder="Age" type="number" required
-                                            [ngClass]="{ error: getControl('age')?.errors && getControl('age')?.touched }">
-                                        <div *ngIf="getControl('age')?.errors && getControl('age')?.touched">
-                                            <small class="text-danger" *ngIf="getControl('age')?.errors?.['required']">
-                                                Age is required.
-                                            </small>
-                                            <small class="text-danger" *ngIf="getControl('age')?.errors?.['min']">
-                                                Age must be at least 18.
-                                            </small>
-                                        </div>
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label for="gender" class="font-weight-700">Gender *</label>
-                                        <select id="gender" formControlName="gender"
-                                            [ngClass]="{ error: getControl('gender')?.errors && getControl('gender')?.touched }">
-                                            <option value="" disabled>Select Gender</option>
-                                            <option *ngFor="let gender of genderOptions" [value]="gender">{{ gender }}
-                                            </option>
-                                        </select>
-                                        <div *ngIf="getControl('gender')?.errors && getControl('gender')?.touched">
-                                            <small class="text-danger"
-                                                *ngIf="getControl('gender')?.errors?.['required']">
-                                                Gender is required.
-                                            </small>
-                                        </div>
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label for="position" class="font-weight-700">Position *</label>
-                                        <input id="position" formControlName="position" placeholder="Position"
-                                            type="text" required
-                                            [ngClass]="{ error: getControl('position')?.errors && getControl('position')?.touched }">
-                                        <div *ngIf="getControl('position')?.errors && getControl('position')?.touched">
-                                            <small class="text-danger"
-                                                *ngIf="getControl('position')?.errors?.['required']">
-                                                Position is required.
-                                            </small>
-                                        </div>
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label for="subject" class="font-weight-700">Subject *</label>
-                                        <input id="subject" formControlName="subject" placeholder="Subject" type="text"
-                                            required
-                                            [ngClass]="{ error: getControl('subject')?.errors && getControl('subject')?.touched }">
-                                        <div *ngIf="getControl('subject')?.errors && getControl('subject')?.touched">
-                                            <small class="text-danger"
-                                                *ngIf="getControl('subject')?.errors?.['required']">
-                                                Subject is required.
-                                            </small>
-                                        </div>
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label for="email" class="font-weight-700">Email *</label>
-                                        <input id="email" formControlName="email" placeholder="Email" type="email"
-                                            required
-                                            [ngClass]="{ error: getControl('email')?.errors && getControl('email')?.touched }">
-                                        <div *ngIf="getControl('email')?.errors && getControl('email')?.touched">
-                                            <small class="text-danger"
-                                                *ngIf="getControl('email')?.errors?.['required']">
-                                                Email is required.
-                                            </small>
-                                            <small class="text-danger" *ngIf="getControl('email')?.errors?.['email']">
-                                                Email is invalid.
-                                            </small>
-                                        </div>
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label for="about" class="font-weight-700">About</label>
-                                        <textarea id="about" formControlName="about" placeholder="About"></textarea>
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label for="duty" class="font-weight-700">Duty</label>
-                                        <textarea id="duty" formControlName="duty" placeholder="Duty"></textarea>
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label for="experience" class="font-weight-700">Experience</label>
-                                        <input id="experience" formControlName="experience" placeholder="Experience"
-                                            type="text">
-                                    </div>
-                                    <div>
-                                        <label for="teacherImage">Teacher Image</label>
-                                        <input type="file" (change)="onFileChange($event)" />
-                                        <div *ngIf="getControl('teacherImage')?.errors?.['required']">
-                                            <small class=" error">Image is required.</small>
-                                        </div>
-                                        <div *ngIf="getControl('teacherImage')?.errors?.['invalidFileType']">
-                                            <small class="error">Invalid file type. Only JPEG, PNG, and GIF are
-                                                allowed.</small>
-                                        </div>
-
-                                    </div>
-                                    <div class="imgsWrapper">
-
-
-                                        <h3>Image Preview:</h3>
-                                        <div *ngFor="let image of images">
-                                            <img [src]="image" alt="Image Preview"
-                                                style="max-width: 100px; max-height: 100px;" />
-                                        </div>
-                                    </div>
-
-                                    <button type="submit" [disabled]="teacherForm.invalid">Add TEACHER</button>
-                                </form>
+                        <div class="form-group">
+                            <label for="name" class="font-weight-700">Name *</label>
+                            <input id="name" formControlName="name" placeholder="Name" type="text" required
+                                [ngClass]="{ error: getControl('name')?.errors && getControl('name')?.touched }">
+                            <div *ngIf="getControl('name')?.errors && getControl('name')?.touched">
+                                <small class="text-danger" *ngIf="getControl('name')?.errors?.['required']">
+                                    Name is required.
+                                </small>
                             </div>
                         </div>
-                    </div>
+
+                        <div class="form-group">
+                            <label for="age" class="font-weight-700">Age *</label>
+                            <input id="age" formControlName="age" placeholder="Age" type="number" required
+                                [ngClass]="{ error: getControl('age')?.errors && getControl('age')?.touched }">
+                            <div *ngIf="getControl('age')?.errors && getControl('age')?.touched">
+                                <small class="text-danger" *ngIf="getControl('age')?.errors?.['required']">
+                                    Age is required.
+                                </small>
+                                <small class="text-danger" *ngIf="getControl('age')?.errors?.['min']">
+                                    Age must be at least 18.
+                                </small>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="gender" class="font-weight-700">Gender *</label>
+                            <select id="gender" formControlName="gender"
+                                [ngClass]="{ error: getControl('gender')?.errors && getControl('gender')?.touched }">
+                                <option value="" disabled>Select Gender</option>
+                                <option *ngFor="let gender of genderOptions" [value]="gender">{{ gender }}
+                                </option>
+                            </select>
+                            <div *ngIf="getControl('gender')?.errors && getControl('gender')?.touched">
+                                <small class="text-danger"
+                                    *ngIf="getControl('gender')?.errors?.['required']">
+                                    Gender is required.
+                                </small>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="position" class="font-weight-700">Position *</label>
+                            <input id="position" formControlName="position" placeholder="Position"
+                                type="text" required
+                                [ngClass]="{ error: getControl('position')?.errors && getControl('position')?.touched }">
+                            <div *ngIf="getControl('position')?.errors && getControl('position')?.touched">
+                                <small class="text-danger"
+                                    *ngIf="getControl('position')?.errors?.['required']">
+                                    Position is required.
+                                </small>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="subject" class="font-weight-700">Subject *</label>
+                            <input id="subject" formControlName="subject" placeholder="Subject" type="text"
+                                required
+                                [ngClass]="{ error: getControl('subject')?.errors && getControl('subject')?.touched }">
+                            <div *ngIf="getControl('subject')?.errors && getControl('subject')?.touched">
+                                <small class="text-danger"
+                                    *ngIf="getControl('subject')?.errors?.['required']">
+                                    Subject is required.
+                                </small>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="email" class="font-weight-700">Email *</label>
+                            <input id="email" formControlName="email" placeholder="Email" type="email"
+                                required
+                                [ngClass]="{ error: getControl('email')?.errors && getControl('email')?.touched }">
+                            <div *ngIf="getControl('email')?.errors && getControl('email')?.touched">
+                                <small class="text-danger"
+                                    *ngIf="getControl('email')?.errors?.['required']">
+                                    Email is required.
+                                </small>
+                                <small class="text-danger" *ngIf="getControl('email')?.errors?.['email']">
+                                    Email is invalid.
+                                </small>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="about" class="font-weight-700">About</label>
+                            <textarea id="about" formControlName="about" placeholder="About"></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="duty" class="font-weight-700">Duty</label>
+                            <textarea id="duty" formControlName="duty" placeholder="Duty"></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="experience" class="font-weight-700">Experience</label>
+                            <input id="experience" formControlName="experience" placeholder="Experience"
+                                type="text">
+                        </div>
+                        <div>
+                            <label for="teacherImage">Teacher Image</label>
+                            <input type="file" (change)="onFileChange($event)" />
+                            <div *ngIf="getControl('teacherImage')?.errors?.['required']">
+                                <small class=" error">Image is required.</small>
+                            </div>
+                            <div *ngIf="getControl('teacherImage')?.errors?.['invalidFileType']">
+                                <small class="error">Invalid file type. Only JPEG, PNG, and GIF are
+                                    allowed.</small>
+                            </div>
+
+                        </div>
+                        <div class="imgsWrapper">
+
+
+                            <h3>Image Preview:</h3>
+                            <div *ngFor="let image of images">
+                                <img [src]="image" alt="Image Preview"
+                                    style="max-width: 100px; max-height: 100px;" />
+                            </div>
+                        </div>
+
+                        <button type="submit" [disabled]="teacherForm.invalid">
+                            {{ data.mode === 'Edit' ? 'Update Teacher' : 'Add Teacher' }}
+                        </button>
+                    </form>
                 </div>
             </div>
-            <!-- Product END -->
         </div>
-        <!-- Shop Service info -->
-        <app-icon-box4></app-icon-box4>
-        <!-- Shop Service info End -->
     </div>
-    <!-- Content END-->
-    <!-- Newsletter -->
-    <app-newsletter2></app-newsletter2>
-    <!-- Footer -->
-    <app-footer13></app-footer13>
-    <!-- Footer END-->
-    <!-- scroltop -->
-    <app-scroltop></app-scroltop>
 </div>

@@ -19,12 +19,22 @@
                         <div class="p-a30 border-1 max-w750 m-auto">
                             <div class="tab-content">
                                 <form [formGroup]="eventForm" (ngSubmit)="onSubmit()">
+                                    
                                     <div>
-                                        <label for="organizerName">Organizer Name:</label>
-                                        <input id="organizerName" type="text" formControlName="organizerName">
+                                        <label for="eventTitle">Event Title:</label>
+                                        <input id="eventTitle" type="text" formControlName="eventTitle">
                                         <div
-                                            *ngIf="eventForm.get('organizerName')?.errors?.['required'] && (eventForm.get('organizerName')?.dirty || eventForm.get('organizerName')?.touched)">
-                                            <small class="error"> organizer Name is required.</small>
+                                            *ngIf="eventForm.get('eventTitle')?.errors?.['required'] && (eventForm.get('eventTitle')?.dirty || eventForm.get('eventTitle')?.touched)">
+                                            <small class="error"> Event Title is required.</small>
+                                        </div>
+                                    </div>
+
+                                    <div>
+                                        <label for="aboutEvent">About Event:</label>
+                                        <textarea id="aboutEvent" formControlName="aboutEvent"></textarea>
+                                        <div
+                                            *ngIf="eventForm.get('aboutEvent')?.errors?.['required'] && (eventForm.get('aboutEvent')?.dirty || eventForm.get('aboutEvent')?.touched)">
+                                            <small class="error">About event is required.</small>
                                         </div>
                                     </div>
 
@@ -37,15 +47,24 @@
                                         </div>
                                     </div>
 
-
                                     <div>
-                                        <label for="eventTitle">Event Title:</label>
-                                        <input id="eventTitle" type="text" formControlName="eventTitle">
+                                        <label for="eventAddress">Event Address:</label>
+                                        <input id="eventAddress" type="text" formControlName="eventAddress">
                                         <div
-                                            *ngIf="eventForm.get('eventTitle')?.errors?.['required'] && (eventForm.get('eventTitle')?.dirty || eventForm.get('eventTitle')?.touched)">
-                                            <small class="error"> Event Title is required.</small>
+                                            *ngIf="eventForm.get('eventAddress')?.errors?.['required'] && (eventForm.get('eventAddress')?.dirty || eventForm.get('eventAddress')?.touched)">
+                                            <small class="error">Event Address is required.</small>
                                         </div>
                                     </div>
+
+                                    <div>
+                                        <label for="category">Category:</label>
+                                        <select id="category" formControlName="category">
+                                          <option *ngFor="let category of categories" [value]="category">{{ category }}</option>
+                                        </select>
+                                        <div *ngIf="eventForm.get('category')?.errors?.['required'] && (eventForm.get('category')?.dirty || eventForm.get('category')?.touched)">
+                                          <small class="error">Category is required.</small>
+                                        </div>
+                                      </div>
 
                                     <div>
                                         <label for="startDate">Event Start Date:</label>
@@ -112,33 +131,21 @@
                                         </div>
                                     </div>
 
-                                    <div>
-                                        <label for="eventAddress">Event Address:</label>
-                                        <input id="eventAddress" type="text" formControlName="eventAddress">
-                                        <div
-                                            *ngIf="eventForm.get('eventAddress')?.errors?.['required'] && (eventForm.get('eventAddress')?.dirty || eventForm.get('eventAddress')?.touched)">
-                                            <small class="error">Event Address is required.</small>
-                                        </div>
-                                    </div>
 
                                     <div>
-                                        <label for="aboutEvent">About Event:</label>
-                                        <textarea id="aboutEvent" formControlName="aboutEvent"></textarea>
-                                        <div
-                                            *ngIf="eventForm.get('aboutEvent')?.errors?.['required'] && (eventForm.get('aboutEvent')?.dirty || eventForm.get('aboutEvent')?.touched)">
-                                            <small class="error">About event is required.</small>
+                                        <label for="eventLabels">Event Labels:</label>
+                                        <div formArrayName="eventLabels">
+                                            <div *ngFor="let label of eventLabels.controls; let i = index">
+                                                <textarea [formControlName]="i" id="eventLabel{{i}}"></textarea>
+                                                <button type="button" (click)="removeLabel(i)">Remove</button>
+                                                <div *ngIf="label.errors?.['required'] && (label.dirty || label.touched)">
+                                                    <small class="error">Event label is required.</small>
+                                                </div>
+                                            </div>
                                         </div>
+                                        <button type="button" (click)="addLabel()">+ Add Label</button>
                                     </div>
-
-
-                                    <div>
-                                        <label for="eventLabel"> Event Label:</label>
-                                        <textarea id="eventLabel" formControlName="eventLabel"></textarea>
-                                        <div
-                                            *ngIf="eventForm.get('eventLabel')?.errors?.['required'] && (eventForm.get('eventLabel')?.dirty || eventForm.get('eventLabel')?.touched)">
-                                            <small class="error"> Event label is required.</small>
-                                        </div>
-                                    </div>
+                                    
                                     <div>
                                         <label for="eventYear">Event Year:</label>
                                         <input id="eventYear" type="number" formControlName="eventYear" min="1900"
@@ -152,6 +159,15 @@
                                             *ngIf="getControl('eventYear')?.errors?.['invalidYear'] && (getControl('eventYear')?.dirty || getControl('eventYear')?.touched)">
                                             <small class="error">Invalid eventYear. Must be between 1900 and
                                                 {{currentYear}}.</small>
+                                        </div>
+                                    </div>
+
+                                    <div>
+                                        <label for="organizerName">Organizer Name:</label>
+                                        <input id="organizerName" type="text" formControlName="organizerName">
+                                        <div
+                                            *ngIf="eventForm.get('organizerName')?.errors?.['required'] && (eventForm.get('organizerName')?.dirty || eventForm.get('organizerName')?.touched)">
+                                            <small class="error"> organizer Name is required.</small>
                                         </div>
                                     </div>
 

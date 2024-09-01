@@ -1,1 +1,48 @@
-<p>update-teacher works!</p>
+<div class="page-wraper">
+    <!-- header -->
+    <app-header-light7></app-header-light7>
+    <!-- header END -->
+    
+    <!-- Content -->
+    <div class="page-content bg-white">
+      <!-- inner page banner -->
+      <app-banner1 [data]="banner"></app-banner1>
+      <!-- inner page banner END -->
+      
+      <!-- contact area -->
+      <div class="content-block">
+        <!-- Our Team -->
+        <div class="section-full content-inner">
+          <div class="container">
+            <!-- Header and Add Button -->
+            <div class="d-flex justify-content-between align-items-center my-3">
+              <h2>Teachers</h2>
+              <button class="btn btn-primary" (click)="openAddTeacherModal()">Add</button>
+            </div>
+            
+            <ul class="">
+              <li *ngFor="let data of teachersData" class="d-flex justify-content-between align-items-center my-3 shadow p-3 bg-body rounded">
+                <div class="">
+                  <h4 class="dlab-title">
+                    <span>Name</span>: 
+                    <a [routerLink]="['/teachers-profile', data._id]">{{ data.name }}</a>
+                  </h4>
+                  <div>
+                    <span class="dlab-title">Position</span>: 
+                    <span class="dlab-position">{{ data.position }}</span>
+                  </div>
+                </div>
+                <div>
+                  <button type="button" class="btn btn-outline-danger ml-1" (click)="openEditTeacherModal(data)">Edit</button>
+                  <button type="button" class="btn btn-outline-danger ml-1" (click)="deleteTeacher(data._id)">Delete</button>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <!-- Our Team END -->
+      </div>
+      <!-- contact area END -->
+    </div>
+  </div>
+  
