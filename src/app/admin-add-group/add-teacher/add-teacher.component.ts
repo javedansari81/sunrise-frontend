@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core'
+import { Component, Inject, OnInit } from '@angular/core'
 import { TeacherService } from 'src/app/services/teacher.service'
 import {
   FormBuilder,
@@ -9,7 +9,7 @@ import {
   AbstractControl,
   ValidationErrors,
 } from '@angular/forms'
-import { MatDialog } from '@angular/material/dialog'
+import { MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog'
 import { SuccessDialogComponent } from 'src/app/util/success-dialog/success-dialog.component'
 
 @Component({
@@ -27,7 +27,7 @@ export class AddTeacherComponent implements OnInit {
   banner: any = {
     pagetitle: 'Add New Teacher',
     bg_image: 'assets/images/banner/bnr5.jpg',
-    title: 'Add New Teacher',
+    title: 'Add/Edit New Teacher',
   }
   // Custom file validator to check for file presence and types
   fileValidator(control: AbstractControl): ValidationErrors | null {
@@ -56,6 +56,7 @@ export class AddTeacherComponent implements OnInit {
     private fb: FormBuilder,
     private teacherService: TeacherService,
     public dialog: MatDialog,
+    @Inject(MAT_DIALOG_DATA) public data: any
   ) {
     this.teacherForm = this.fb.group({
       name: ['', Validators.required],
@@ -72,7 +73,28 @@ export class AddTeacherComponent implements OnInit {
     })
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+      // Check if the data passed in contains a teacher object (i.e., the mode is 'edit')
+      if (this.data && this.data.teacher) {
+        this.teacherForm.patchValue({
+          name: this.data.teacher.name,
+          age: this.data.teacher.age,
+          gender: this.data.teacher.gender,
+          position: this.data.teacher.position,
+          subject: this.data.teacher.subject,
+          email: this.data.teacher.email,
+          about: this.data.teacher.about,
+          duty: this.data.teacher.duty,
+          experience: this.data.teacher.experience,
+          isActive: this.data.teacher.isActive,
+          teacherImage: this.data.teacher.teacherImage, // Assuming this is a base64 string or URL
+        });
+        // If there's an image, you can load it into the images array for preview
+        if (this.data.teacher.teacherImage) {
+          this.images = [this.data.teacher.teacherImage];
+        }
+    }
+  }
 
   getControl(controlName: string) {
     return this.teacherForm.get(controlName)
@@ -94,6 +116,38 @@ export class AddTeacherComponent implements OnInit {
       this.teacherForm.patchValue({ teacherImage: null }) // Clear the form control if no files
     }
   }
+
+  saveTeacher() {
+    if (this.teacherForm.valid) {
+      if (this.data.mode === 'Edit' && this.data.teacher) {
+        // Edit existing teacher
+        this.teacherService.updateTeacher(this.data.teacher._id, this.teacherForm.value).subscribe(
+          (response) => {
+            console.log('Teacher updated successfully!', response);
+            this.openSuccessDialog('Teacher updated successfully!');
+          },
+          (error) => {
+            console.error('Error updating teacher:', error);
+            this.openSuccessDialog('Failed to update teacher. Please try again.');
+          },
+        );
+      } else {
+        // Add new teacher
+        this.teacherService.addTeacher(this.teacherForm.value).subscribe(
+          (response) => {
+            console.log('Teacher added successfully!', response);
+            this.openSuccessDialog('Teacher is saved successfully!');
+          },
+          (error) => {
+            console.error('Error adding teacher:', error);
+            this.openSuccessDialog('Failed to save teacher. Please try again.');
+          },
+        );
+      }
+    } else {
+      this.teacherForm.markAllAsTouched(); // Mark all fields as touched to show validation messages
+    }
+  }  
 
   addTeacher() {
     if (this.teacherForm.valid) {

@@ -9,6 +9,7 @@ import {
   FormControl,
   AbstractControl,
   ValidationErrors,
+  FormArray,
 } from '@angular/forms'
 import { Router } from '@angular/router'
 import { throwError } from 'rxjs'
@@ -25,6 +26,7 @@ export class AddEventComponent {
   user: any
   images: string[] = []
   currentYear: number = new Date().getFullYear()
+  categories: string[] = ['Sports', 'Art', 'Music', 'Annual Day', 'Other'];
 
   banner: any = {
     pagetitle: 'Add New EVENT',
@@ -77,11 +79,12 @@ export class AddEventComponent {
 
       eventAddress: ['', Validators.required],
       eventTitle: ['', Validators.required],
-      eventLabel: ['', Validators.required],
+      eventLabels: this.fb.array([this.createLabel()]), // FormArray for event labels
       eventImage: [null, this.fileValidator],
       eventYear: ['', [Validators.required, this.yearValidator]],
       email: ['', [Validators.required, Validators.email]],
       phone: ['', [Validators.required, Validators.pattern('^[0-9]{10}$')]],
+      category: ['Arts', Validators.required], // Add the new category field
       isActive: [1],
     })
   }
@@ -122,6 +125,30 @@ export class AddEventComponent {
       }
     } else {
       this.eventForm.patchValue({ eventImage: null }) // Clear the form control if no files
+    }
+  }
+
+  // Getter for the eventLabels FormArray
+  get eventLabels(): FormArray {
+    return this.eventForm.get('eventLabels') as FormArray;
+  }
+
+  // Method to create a new label FormControl
+  createLabel(): FormGroup {
+    return this.fb.group({
+      label: ['', Validators.required],
+    });
+  }
+
+  // Method to add a new label to the FormArray
+  addLabel(): void {
+    this.eventLabels.push(this.createLabel());
+  }
+
+  // Method to remove a label from the FormArray
+  removeLabel(index: number): void {
+    if (this.eventLabels.length > 1) {
+      this.eventLabels.removeAt(index);
     }
   }
 
