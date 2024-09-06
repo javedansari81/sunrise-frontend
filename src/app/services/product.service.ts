@@ -1,6 +1,7 @@
-import { HttpClient } from '@angular/common/http'
+import { HttpClient, HttpErrorResponse } from '@angular/common/http'
 import { Injectable } from '@angular/core'
-import { Observable, catchError, forkJoin, map, of } from 'rxjs'
+import { Observable, forkJoin, map, of, throwError } from 'rxjs'
+import { catchError } from 'rxjs/operators'
 
 @Injectable({
   providedIn: 'root',
@@ -14,7 +15,7 @@ export class ProductService {
   constructor(private http: HttpClient) {}
 
   getProducts(): Observable<any> {
-    return this.http.get<any[]>(this.productUrl)
+    return this.http.get<any[]>(this.apiUrl)
   }
 
   getProductsByCategory(category: string): Observable<any[]> {
@@ -61,7 +62,35 @@ export class ProductService {
 
   // update product
 
-  updateProduct(product: any): Observable<any> {
-    return this.http.put<any>(`${this.productUrl}/${product.id}`, product)
+  updateProduct(product_id: string, product: any): Observable<any> {
+    console.log('pda', product_id, 'pd', product)
+
+    return this.http
+      .put<any>(`${this.apiUrl}/${product_id}`, product)
+      .pipe(catchError(this.handleError))
+  }
+
+  deleteProduct(product_id: any): Observable<any> {
+    console.log('csid', typeof product_id)
+
+    return this.http
+      .delete<any>(`${this.apiUrl}/${product_id}`)
+      .pipe(catchError(this.handleError))
+  }
+
+  private handleError(error: HttpErrorResponse) {
+    if (error.error instanceof ErrorEvent) {
+      // A client-side or network error occurred
+      console.error('An error occurred:', error.error.message)
+    } else {
+      // The backend returned an unsuccessful response code
+      console.error(
+        `Backend returned code ${error.status}, ` + `body was: ${error.error}`,
+      )
+    }
+    // Return an observable with a user-facing error message
+    return throwError(
+      () => new Error('Something went wrong; please try again later.'),
+    )
   }
 }

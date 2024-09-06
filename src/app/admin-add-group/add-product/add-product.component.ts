@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core'
+import { Component, Inject, OnInit } from '@angular/core'
 import { ProductService } from '../../services/product.service'
 import {
   FormBuilder,
@@ -10,7 +10,7 @@ import {
   FormArray,
 } from '@angular/forms'
 import { Router } from '@angular/router'
-import { MatDialog } from '@angular/material/dialog'
+import { MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog'
 import { SuccessDialogComponent } from 'src/app/util/success-dialog/success-dialog.component'
 @Component({
   selector: 'app-add-product',
@@ -36,6 +36,7 @@ export class AddProductComponent implements OnInit {
     private productService: ProductService,
     private router: Router,
     private dialog: MatDialog,
+    @Inject(MAT_DIALOG_DATA) public data: any,
   ) {
     this.productForm = this.fb.group({
       title: ['', Validators.required],
@@ -74,7 +75,64 @@ export class AddProductComponent implements OnInit {
     if (userData) {
       this.user = JSON.parse(userData)
     }
-    console.log('pdf--', this.productForm.valid)
+
+    // Check if the data passed in contains a productDetail object (i.e., the mode is 'edit')
+    if (this.data && this.data.productDetail) {
+      const productDetail = this.data.productDetail
+      console.log('data--', this.data)
+
+      // Patch the main form values
+      this.productForm.patchValue({
+        title: productDetail.title,
+        availability: productDetail.availability,
+        category: productDetail.category,
+        currency: productDetail.currency,
+        color: productDetail.color,
+        deliveryTime: productDetail.deliveryTime,
+        description: productDetail.description,
+        img: productDetail.img,
+        price: productDetail.price,
+        priceDiscount: productDetail.priceDisc,
+        rating: productDetail.rating,
+        returnPolicy: productDetail.returnPolicy,
+        shipping_Cost: productDetail.shippingCost,
+        stock: productDetail.stock,
+
+        vendorContact: productDetail.vendorContact,
+        vendorId: productDetail.vendorId,
+        vendorName: productDetail.vendorName,
+        video: productDetail.video,
+      })
+
+      // Manually patch nested form groups like specifications
+      this.productForm.get('specifications')?.patchValue({
+        dimensions: productDetail.specifications.dimensions,
+        material: productDetail.specifications.material,
+        weight: productDetail.specifications.weight,
+      })
+
+      // Manually update the FormArrays for additionalImages, features, and size
+      this.updateFormArray(
+        this.additionalImages,
+        productDetail.additionalImages,
+      )
+      this.updateFormArray(this.features, productDetail.features)
+      this.updateFormArray(this.size, productDetail.size)
+
+      // If there's an image, you can load it into the images array for preview
+      if (productDetail.img) {
+        this.images = [productDetail.img]
+      }
+    }
+  }
+  // Helper method to update FormArray
+  updateFormArray(formArray: FormArray, items: any[]): void {
+    formArray.clear() // Clear the existing form array
+    items.forEach((item) => {
+      console.log('itm', item)
+
+      formArray.push(this.fb.control(item))
+    })
   }
 
   getControl(value: string): AbstractControl | null {
@@ -184,33 +242,41 @@ export class AddProductComponent implements OnInit {
   onSubmit(event: Event) {
     event.preventDefault() // Prevent the default form submission
     event.stopPropagation() // Stop event propagation
-
     if (this.productForm.valid) {
-      console.log('addProduct-form', this.productForm.value)
-
-      const product: any = {
-        ...this.productForm.value,
-        images: this.images,
-        additionalImages: this.additionalImages.value,
-        video: this.productForm.value.video,
+      if (this.data.mode === 'Edit' && this.data.productDetail) {
+        // Edit existing teacher
+        this.productService
+          .updateProduct(this.data.productDetail._id, this.productForm.value)
+          .subscribe(
+            (response) => {
+              console.log('Product updated successfully!', response)
+              this.openSuccessDialog('Product updated successfully!')
+            },
+            (error) => {
+              console.error('Error updating Product:', error)
+              this.openSuccessDialog(
+                'Failed to update product. Please try again.',
+              )
+            },
+          )
+      } else {
+        // Add new Product
+        this.productService.addProduct(this.productForm.value).subscribe(
+          (response) => {
+            console.log('Product added successfully!', response)
+            this.openSuccessDialog('Product is saved successfully!')
+          },
+          (error) => {
+            console.error('Error adding Product:', error)
+            this.openSuccessDialog('Failed to save product. Please try again.')
+          },
+        )
       }
-      console.log('addProduct-valid', product)
-
-      this.productService.addProduct(product).subscribe(
-        (response) => {
-          console.log('Product added successfully!', response)
-          this.openSuccessDialog('class is saved successfully!')
-        },
-        (error) => {
-          console.error('Error adding product', error)
-          this.openSuccessDialog('Failed to save class. Please try again.')
-        },
-      )
     } else {
-      console.log('product form invalid')
-      this.productForm.markAllAsTouched()
+      this.productForm.markAllAsTouched() // Mark all fields as touched to show validation messages
     }
   }
+
   openSuccessDialog(message: string): void {
     this.dialog.open(SuccessDialogComponent, {
       data: {

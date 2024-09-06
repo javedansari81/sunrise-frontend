@@ -1,112 +1,98 @@
-<div class="page-wrapper">
-    <app-header-light7></app-header-light7>
+<div class="page-content bg-white">
 
-    <div class="page-content bg-white">
-        <!-- inner page banner -->
-        <app-banner1 [data]="banner"></app-banner1>
-        <!-- inner page banner END -->
 
-        <div class="section-full content-inner shop-account">
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-12 text-center">
-                        <h2 class="font-weight-700 m-t0 m-b40">ADD NEW CLASS</h2>
-                    </div>
+    <div class="section-full content-inner shop-account">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 text-center">
+                    <h2 class="font-weight-700 m-t0 m-b40">ADD NEW CLASS</h2>
                 </div>
-                <div class="row">
-                    <div class="col-lg-12 m-b30">
-                        <div class="p-a30 border-1 max-w750 m-auto">
-                            <div class="tab-content">
-                                <form [formGroup]="classForm" (ngSubmit)="onSubmit()">
-                                    <div>
-                                        <label for="className">Class Name:</label>
-                                        <input id="className" type="text" formControlName="className" required
-                                            [ngClass]="{'error': getControl('className')?.errors && getControl('className')?.touched}">
-                                        <div
-                                            *ngIf="getControl('className')?.errors && getControl('className')?.touched">
-                                            <small class="text-danger"
-                                                *ngIf="getControl('className')?.errors?.['required']">
-                                                Class name is required.
-                                            </small>
-                                        </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12 m-b30">
+                    <div class="p-a30 border-1 max-w750 m-auto">
+                        <div class="tab-content">
+                            <form [formGroup]="classForm" (ngSubmit)="onSubmit()">
+                                <div>
+                                    <label for="className">Class Name:</label>
+                                    <input id="className" type="text" formControlName="className" required
+                                        [ngClass]="{'error': getControl('className')?.errors && getControl('className')?.touched}">
+                                    <div *ngIf="getControl('className')?.errors && getControl('className')?.touched">
+                                        <small class="text-danger"
+                                            *ngIf="getControl('className')?.errors?.['required']">
+                                            Class name is required.
+                                        </small>
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <label for="classStudent">Class Students:</label>
+                                    <input id="classStudent" type="number" formControlName="classStudent" required
+                                        [ngClass]="{'error': getControl('classStudent')?.errors && getControl('classStudent')?.touched}">
+                                    <div
+                                        *ngIf="getControl('classStudent')?.errors && getControl('classStudent')?.touched">
+                                        <small class="text-danger"
+                                            *ngIf="getControl('classStudent')?.errors?.['required']">
+                                            Class Students is required.
+                                        </small>
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <label for="classSubject">Class Subjects:</label>
+                                    <input id="classSubject" type="text" formControlName="classSubject" required
+                                        [ngClass]="{'error': getControl('classSubject')?.errors && getControl('classSubject')?.touched}">
+                                    <div
+                                        *ngIf="getControl('classSubject')?.errors && getControl('classSubject')?.touched">
+                                        <small class="text-danger"
+                                            *ngIf="getControl('classSubject')?.errors?.['required']">
+                                            Subject is required.
+                                        </small>
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <label for="aboutClass">About class:</label>
+                                    <textarea name="aboutClass" id="aboutClass" formControlName="aboutClass"
+                                        required></textarea>
+                                    <div *ngIf="getControl('aboutClass')?.errors && getControl('aboutClass')?.touched">
+                                        <small class="text-danger"
+                                            *ngIf="getControl('aboutClass')?.errors?.['required']">
+                                            Class Details is required.
+                                        </small>
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <label for="classImage">Class Image</label>
+                                    <input type="file" (change)="onFileChange($event)" multiple />
+                                    <div *ngIf="getControl('classImage')?.errors?.['required']">
+                                        <small class=" error">Image is required.</small>
+                                    </div>
+                                    <div *ngIf="getControl('classImage')?.errors?.['invalidFileType']">
+                                        <small class="error">Invalid file type. Only JPEG, PNG, and GIF are
+                                            allowed.</small>
                                     </div>
 
-                                    <div>
-                                        <label for="classStudent">Class Students:</label>
-                                        <input id="classStudent" type="number" formControlName="classStudent" required
-                                            [ngClass]="{'error': getControl('classStudent')?.errors && getControl('classStudent')?.touched}">
-                                        <div
-                                            *ngIf="getControl('classStudent')?.errors && getControl('classStudent')?.touched">
-                                            <small class="text-danger"
-                                                *ngIf="getControl('classStudent')?.errors?.['required']">
-                                                Class Students is required.
-                                            </small>
-                                        </div>
+                                </div>
+                                <div class="imgsWrapper">
+
+
+                                    <h3>Image Preview:</h3>
+                                    <div *ngFor="let image of images">
+                                        <img [src]="image" alt="Image Preview"
+                                            style="max-width: 100px; max-height: 100px;" />
                                     </div>
 
-                                    <div>
-                                        <label for="classSubject">Class Subjects:</label>
-                                        <input id="classSubject" type="text" formControlName="classSubject" required
-                                            [ngClass]="{'error': getControl('classSubject')?.errors && getControl('classSubject')?.touched}">
-                                        <div
-                                            *ngIf="getControl('classSubject')?.errors && getControl('classSubject')?.touched">
-                                            <small class="text-danger"
-                                                *ngIf="getControl('classSubject')?.errors?.['required']">
-                                                Subject is required.
-                                            </small>
-                                        </div>
-                                    </div>
-
-                                    <div>
-                                        <label for="aboutClass">About class:</label>
-                                        <textarea name="aboutClass" id="aboutClass" formControlName="aboutClass"
-                                            required></textarea>
-                                        <div
-                                            *ngIf="getControl('aboutClass')?.errors && getControl('aboutClass')?.touched">
-                                            <small class="text-danger"
-                                                *ngIf="getControl('aboutClass')?.errors?.['required']">
-                                                Class Details is required.
-                                            </small>
-                                        </div>
-                                    </div>
-
-                                    <div>
-                                        <label for="classImage">Class Image</label>
-                                        <input type="file" (change)="onFileChange($event)" multiple />
-                                        <div *ngIf="getControl('classImage')?.errors?.['required']">
-                                            <small class=" error">Image is required.</small>
-                                        </div>
-                                        <div *ngIf="getControl('classImage')?.errors?.['invalidFileType']">
-                                            <small class="error">Invalid file type. Only JPEG, PNG, and GIF are
-                                                allowed.</small>
-                                        </div>
-
-                                    </div>
-                                    <div class="imgsWrapper">
-
-
-                                        <h3>Image Preview:</h3>
-                                        <div *ngFor="let image of images">
-                                            <img [src]="image" alt="Image Preview"
-                                                style="max-width: 100px; max-height: 100px;" />
-                                        </div>
-
-                                    </div>
-                                    <button type="submit" [disabled]="classForm.invalid">Add Class</button>
-                                </form>
-                            </div>
+                                </div>
+                                <button type="submit" [disabled]="classForm.invalid">Add Class</button>
+                            </form>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-
-        <!-- footer -->
-        <app-newsletter2></app-newsletter2>
-        <!-- Footer -->
-        <app-footer13></app-footer13>
-        <!-- Footer END-->
-        <!-- scroltop -->
-        <app-scroltop></app-scroltop>
     </div>
+
+
 </div>

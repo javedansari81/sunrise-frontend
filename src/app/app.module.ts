@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core'
+import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core'
 import { BrowserModule } from '@angular/platform-browser'
 import { LightgalleryModule } from 'lightgallery/angular'
 
@@ -180,19 +180,19 @@ import { HttpClientModule } from '@angular/common/http'
 import { AboutSunriseComponent } from './about-us/about-sunrise/about-sunrise.component'
 import { ReactiveFormsModule } from '@angular/forms'
 import { AddProductComponent } from './admin-add-group/add-product/add-product.component'
-import { UpdateProductComponent } from './update-product/update-product.component';
-import { AddTeacherComponent } from './admin-add-group/add-teacher/add-teacher.component';
-import { AddEventComponent } from './admin-add-group/add-event/add-event.component';
-import { AddClassComponent } from './admin-add-group/add-class/add-class.component';
-import { AddServiceComponent } from './admin-add-group/add-service/add-service.component';
-import { AddTestimonialsComponent } from './admin-add-group/add-testimonials/add-testimonials.component';
+import { AddTeacherComponent } from './admin-add-group/add-teacher/add-teacher.component'
+import { AddEventComponent } from './admin-add-group/add-event/add-event.component'
+import { AddClassComponent } from './admin-add-group/add-class/add-class.component'
+import { AddServiceComponent } from './admin-add-group/add-service/add-service.component'
+import { AddTestimonialsComponent } from './admin-add-group/add-testimonials/add-testimonials.component'
 import { SuccessDialogComponent } from './util/success-dialog/success-dialog.component'
-import { MatDialogModule } from '@angular/material/dialog';
-import { UpdateTeacherComponent } from './admin-update-group/update-teacher/update-teacher.component';
-import { UpdateEventComponent } from './admin-update-group/update-event/update-event.component';
-import { UpdateClassComponent } from './admin-update-group/update-class/update-class.component';
-import { UpdateTestimonialsComponent } from './admin-update-group/update-testimonials/update-testimonials.component';
-import { UpdateServiceComponent } from './admin-update-group/update-service/update-service.component';
+import { MatDialogModule } from '@angular/material/dialog'
+import { UpdateTeacherComponent } from './admin-update-group/update-teacher/update-teacher.component'
+import { UpdateEventComponent } from './admin-update-group/update-event/update-event.component'
+import { UpdateClassComponent } from './admin-update-group/update-class/update-class.component'
+import { UpdateTestimonialsComponent } from './admin-update-group/update-testimonials/update-testimonials.component'
+import { UpdateServiceComponent } from './admin-update-group/update-service/update-service.component'
+import { UpdateProductComponent } from './admin-update-group/update-product/update-product.component'
 @NgModule({
   declarations: [
     AppComponent,
@@ -368,7 +368,7 @@ import { UpdateServiceComponent } from './admin-update-group/update-service/upda
     PrincipalMessageComponent,
     AboutSunriseComponent,
     AddProductComponent,
-    UpdateProductComponent,
+
     AddTeacherComponent,
     AddEventComponent,
     AddClassComponent,
@@ -380,6 +380,7 @@ import { UpdateServiceComponent } from './admin-update-group/update-service/upda
     UpdateClassComponent,
     UpdateTestimonialsComponent,
     UpdateServiceComponent,
+    UpdateProductComponent,
   ],
   imports: [
     BrowserModule,
@@ -390,6 +391,7 @@ import { UpdateServiceComponent } from './admin-update-group/update-service/upda
     MatDialogModule,
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  schemas: [CUSTOM_ELEMENTS_SCHEMA], // Add this line
+  bootstrap: [AppComponent],
 })
 export class AppModule {}

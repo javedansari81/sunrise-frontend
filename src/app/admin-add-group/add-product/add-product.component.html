@@ -160,267 +160,257 @@
 
 
 
-<div class="page-wraper">
-    <app-header-light7></app-header-light7>
 
-    <div class="page-content bg-white">
-        <!-- inner page banner -->
-        <app-banner1 [data]="banner"></app-banner1>
-        <!-- inner page banner END -->
 
-        <div class="section-full content-inner shop-account">
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-12 text-center">
-                        <h2 class="font-weight-700 m-t0 m-b40">ADD NEW PRODUCT</h2>
-                    </div>
+
+<div class="page-content bg-white">
+    <!-- inner page banner -->
+
+    <!-- inner page banner END -->
+
+    <div class="section-full content-inner shop-account">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 text-center">
+                    <h2 class="font-weight-700 m-t0 m-b40">ADD NEW PRODUCT</h2>
                 </div>
+            </div>
 
-                <div class="row">
-                    <div class="col-lg-12 m-b30">
-                        <div class="p-a30 border-1 max-w750 m-auto">
-                            <div class="tab-content">
-                                <form [formGroup]="productForm" (ngSubmit)="onSubmit($event)">
-                                    <div>
-                                        <label for="title">Title:</label>
-                                        <input id="title" formControlName="title" type="text">
-                                        <div
-                                            *ngIf="productForm.get('title')?.invalid && productForm.get('title')?.touched">
-                                            <small class="error">Title is required.</small>
-                                        </div>
+            <div class="row">
+                <div class="col-lg-12 m-b30">
+                    <div class="p-a30 border-1 max-w750 m-auto">
+                        <div class="tab-content">
+                            <form [formGroup]="productForm" (ngSubmit)="onSubmit($event)">
+                                <div>
+                                    <label for="title">Title:</label>
+                                    <input id="title" formControlName="title" type="text">
+                                    <div *ngIf="productForm.get('title')?.invalid && productForm.get('title')?.touched">
+                                        <small class="error">Title is required.</small>
                                     </div>
+                                </div>
 
 
-                                    <div>
-                                        <label>Additional Images:</label>
-                                        <input type="file" multiple (change)="onAdditionalImagesChange($event)">
-                                        <div *ngIf="additionalImagesPreview.length">
-                                            <h3>Additional Images Preview:</h3>
-                                            <div class="imgsWrapper">
-                                                <div *ngFor="let image of additionalImagesPreview">
+                                <div>
+                                    <label>Additional Images:</label>
+                                    <input type="file" multiple (change)="onAdditionalImagesChange($event)">
+                                    <div *ngIf="additionalImagesPreview.length">
+                                        <h3>Additional Images Preview:</h3>
+                                        <div class="imgsWrapper">
+                                            <div *ngFor="let image of additionalImagesPreview">
 
-                                                    <img [src]="image" alt="Additional Image Preview"
-                                                        style="max-width: 100px; max-height: 100px;">
+                                                <img [src]="image" alt="Additional Image Preview"
+                                                    style="max-width: 100px; max-height: 100px;">
 
-                                                </div>
                                             </div>
                                         </div>
                                     </div>
+                                </div>
 
 
+                                <div>
+                                    <label for="availability">Availability:</label>
+                                    <input id="availability" formControlName="availability" type="text">
+                                    <div
+                                        *ngIf="productForm.get('availability')?.invalid && productForm.get('availability')?.touched">
+                                        <small class="error">Availability is required.</small>
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <label for="category">Category:</label>
+                                    <input id="category" formControlName="category" type="text">
+                                    <div
+                                        *ngIf="productForm.get('category')?.invalid && productForm.get('category')?.touched">
+                                        <small class="error">Category is required.</small>
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <label for="color">Color:</label>
+                                    <input id="color" formControlName="color" type="text">
+                                    <div *ngIf="productForm.get('color')?.invalid && productForm.get('color')?.touched">
+                                        <small class="error">Color is required.</small>
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <label for="currency">Currency:</label>
+                                    <input id="currency" formControlName="currency" type="text">
+                                    <div
+                                        *ngIf="productForm.get('currency')?.invalid && productForm.get('currency')?.touched">
+                                        <small class="error">Currency is required.</small>
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <label for="deliveryTime">Delivery Time:</label>
+                                    <input id="deliveryTime" formControlName="deliveryTime" type="text">
+                                    <div
+                                        *ngIf="productForm.get('deliveryTime')?.invalid && productForm.get('deliveryTime')?.touched">
+                                        <small class="error">Delivery Time is required.</small>
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <label for="description">Description:</label>
+                                    <textarea id="description" formControlName="description"></textarea>
+                                    <div
+                                        *ngIf="productForm.get('description')?.invalid && productForm.get('description')?.touched">
+                                        <small class="error">Description is required.</small>
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <label>Features:</label>
+                                    <div formArrayName="features">
+                                        <div *ngFor="let feature of features.controls; let i = index">
+                                            <input [formControlName]="i" type="text">
+                                            <button type="button" (click)="removeFeature(i)">Remove</button>
+                                        </div>
+                                        <button type="button" (click)="addFeature()">Add Feature</button>
+                                    </div>
+                                </div>
+
+
+
+                                <div>
+                                    <label for="img">Main Image:</label>
+                                    <input id="img" type="file" (change)="onFileChange($event)">
+                                    <div *ngIf="productForm.get('img')?.invalid && productForm.get('img')?.touched">
+                                        <small class="error">Main image is required.</small>
+                                    </div>
+                                    <div *ngIf="images.length">
+                                        <h3>Main Image Preview:</h3>
+                                        <img *ngFor="let image of images" [src]="image" alt="Main Image Preview"
+                                            style="max-width: 100px; max-height: 100px;">
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <label for="price">Price:</label>
+                                    <input id="price" formControlName="price" type="text">
+                                    <div *ngIf="productForm.get('price')?.invalid && productForm.get('price')?.touched">
+                                        <small class="error">Price is required.</small>
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <label for="priceDiscount">Price Discount:</label>
+                                    <input id="priceDiscount" formControlName="priceDiscount" type="text">
+                                </div>
+
+                                <div>
+                                    <label for="rating">Rating:</label>
+                                    <input id="rating" formControlName="rating" type="text">
+                                </div>
+
+                                <div>
+                                    <label for="returnPolicy">Return Policy:</label>
+                                    <input id="returnPolicy" formControlName="returnPolicy" type="text">
+                                </div>
+
+                                <div>
+                                    <label for="shipping_Cost">Shipping Cost:</label>
+                                    <input id="shipping_Cost" formControlName="shipping_Cost" type="text">
+                                    <div
+                                        *ngIf="productForm.get('shipping_Cost')?.invalid && productForm.get('shipping_Cost')?.touched">
+                                        <small class="error">Shipping Cost is required.</small>
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <label>Sizes:</label>
+                                    <div formArrayName="size">
+                                        <div *ngFor="let s of size.controls; let i = index">
+                                            <input [formControlName]="i" type="text">
+                                            <button type="button" (click)="removeSize(i)">Remove</button>
+                                        </div>
+                                        <button type="button" (click)="addSize()">Add Size</button>
+                                    </div>
+                                </div>
+
+                                <div formGroupName="specifications">
+                                    <label>Specifications:</label>
                                     <div>
-                                        <label for="availability">Availability:</label>
-                                        <input id="availability" formControlName="availability" type="text">
+                                        <label for="dimensions">Dimensions:</label>
+                                        <input id="dimensions" formControlName="dimensions" type="text">
                                         <div
-                                            *ngIf="productForm.get('availability')?.invalid && productForm.get('availability')?.touched">
-                                            <small class="error">Availability is required.</small>
+                                            *ngIf="productForm.get('specifications.dimensions')?.invalid && productForm.get('specifications.dimensions')?.touched">
+                                            <small class="error">Dimensions are required.</small>
                                         </div>
                                     </div>
-
                                     <div>
-                                        <label for="category">Category:</label>
-                                        <input id="category" formControlName="category" type="text">
+                                        <label for="material">Material:</label>
+                                        <input id="material" formControlName="material" type="text">
                                         <div
-                                            *ngIf="productForm.get('category')?.invalid && productForm.get('category')?.touched">
-                                            <small class="error">Category is required.</small>
+                                            *ngIf="productForm.get('specifications.material')?.invalid && productForm.get('specifications.material')?.touched">
+                                            <small class="error">Material is required.</small>
                                         </div>
                                     </div>
-
                                     <div>
-                                        <label for="color">Color:</label>
-                                        <input id="color" formControlName="color" type="text">
+                                        <label for="weight">Weight:</label>
+                                        <input id="weight" formControlName="weight" type="text">
                                         <div
-                                            *ngIf="productForm.get('color')?.invalid && productForm.get('color')?.touched">
-                                            <small class="error">Color is required.</small>
+                                            *ngIf="productForm.get('specifications.weight')?.invalid && productForm.get('specifications.weight')?.touched">
+                                            <small class="error">Weight is required.</small>
                                         </div>
                                     </div>
+                                </div>
 
-                                    <div>
-                                        <label for="currency">Currency:</label>
-                                        <input id="currency" formControlName="currency" type="text">
-                                        <div
-                                            *ngIf="productForm.get('currency')?.invalid && productForm.get('currency')?.touched">
-                                            <small class="error">Currency is required.</small>
-                                        </div>
+                                <div>
+                                    <label for="stock">Stock:</label>
+                                    <input id="stock" formControlName="stock" type="text">
+                                    <div *ngIf="productForm.get('stock')?.invalid && productForm.get('stock')?.touched">
+                                        <small class="error">Stock is required.</small>
                                     </div>
+                                </div>
 
-                                    <div>
-                                        <label for="deliveryTime">Delivery Time:</label>
-                                        <input id="deliveryTime" formControlName="deliveryTime" type="text">
-                                        <div
-                                            *ngIf="productForm.get('deliveryTime')?.invalid && productForm.get('deliveryTime')?.touched">
-                                            <small class="error">Delivery Time is required.</small>
-                                        </div>
+                                <div>
+                                    <label for="vendorContact">Vendor Contact:</label>
+                                    <input id="vendorContact" formControlName="vendorContact" type="email">
+                                    <div
+                                        *ngIf="productForm.get('vendorContact')?.invalid && productForm.get('vendorContact')?.touched">
+                                        <small class="error">Valid email is required.</small>
                                     </div>
+                                </div>
 
-                                    <div>
-                                        <label for="description">Description:</label>
-                                        <textarea id="description" formControlName="description"></textarea>
-                                        <div
-                                            *ngIf="productForm.get('description')?.invalid && productForm.get('description')?.touched">
-                                            <small class="error">Description is required.</small>
-                                        </div>
+                                <div>
+                                    <label for="vendorId">Vendor ID:</label>
+                                    <input id="vendorId" formControlName="vendorId" type="text">
+                                    <div
+                                        *ngIf="productForm.get('vendorId')?.invalid && productForm.get('vendorId')?.touched">
+                                        <small class="error">Vendor ID is required.</small>
                                     </div>
+                                </div>
 
-                                    <div>
-                                        <label>Features:</label>
-                                        <div formArrayName="features">
-                                            <div *ngFor="let feature of features.controls; let i = index">
-                                                <input [formControlName]="i" type="text">
-                                                <button type="button" (click)="removeFeature(i)">Remove</button>
-                                            </div>
-                                            <button type="button" (click)="addFeature()">Add Feature</button>
-                                        </div>
+                                <div>
+                                    <label for="vendorName">Vendor Name:</label>
+                                    <input id="vendorName" formControlName="vendorName" type="text">
+                                    <div
+                                        *ngIf="productForm.get('vendorName')?.invalid && productForm.get('vendorName')?.touched">
+                                        <small class="error">Vendor Name is required.</small>
                                     </div>
+                                </div>
 
-
-
-                                    <div>
-                                        <label for="img">Main Image:</label>
-                                        <input id="img" type="file" (change)="onFileChange($event)">
-                                        <div *ngIf="productForm.get('img')?.invalid && productForm.get('img')?.touched">
-                                            <small class="error">Main image is required.</small>
-                                        </div>
-                                        <div *ngIf="images.length">
-                                            <h3>Main Image Preview:</h3>
-                                            <img *ngFor="let image of images" [src]="image" alt="Main Image Preview"
-                                                style="max-width: 100px; max-height: 100px;">
-                                        </div>
+                                <div>
+                                    <label for="video">Video:</label>
+                                    <input id="video" type="file" accept="video/*" (change)="onVideoChange($event)">
+                                    <div *ngIf="videoPreview">
+                                        <h3>Video Preview:</h3>
+                                        <video [src]="videoPreview" controls
+                                            style="width: 150px; max-height: 100px;"></video>
                                     </div>
-
-                                    <div>
-                                        <label for="price">Price:</label>
-                                        <input id="price" formControlName="price" type="text">
-                                        <div
-                                            *ngIf="productForm.get('price')?.invalid && productForm.get('price')?.touched">
-                                            <small class="error">Price is required.</small>
-                                        </div>
+                                    <div *ngIf="productForm.get('video')?.invalid && productForm.get('video')?.touched">
+                                        <small class="text-danger">{{ getVideoError() }}</small>
                                     </div>
+                                </div>
+                                <button type="submit" [disabled]="productForm.invalid">Submit</button>
+                            </form>
 
-                                    <div>
-                                        <label for="priceDiscount">Price Discount:</label>
-                                        <input id="priceDiscount" formControlName="priceDiscount" type="text">
-                                    </div>
-
-                                    <div>
-                                        <label for="rating">Rating:</label>
-                                        <input id="rating" formControlName="rating" type="text">
-                                    </div>
-
-                                    <div>
-                                        <label for="returnPolicy">Return Policy:</label>
-                                        <input id="returnPolicy" formControlName="returnPolicy" type="text">
-                                    </div>
-
-                                    <div>
-                                        <label for="shipping_Cost">Shipping Cost:</label>
-                                        <input id="shipping_Cost" formControlName="shipping_Cost" type="text">
-                                        <div
-                                            *ngIf="productForm.get('shipping_Cost')?.invalid && productForm.get('shipping_Cost')?.touched">
-                                            <small class="error">Shipping Cost is required.</small>
-                                        </div>
-                                    </div>
-
-                                    <div>
-                                        <label>Sizes:</label>
-                                        <div formArrayName="size">
-                                            <div *ngFor="let s of size.controls; let i = index">
-                                                <input [formControlName]="i" type="text">
-                                                <button type="button" (click)="removeSize(i)">Remove</button>
-                                            </div>
-                                            <button type="button" (click)="addSize()">Add Size</button>
-                                        </div>
-                                    </div>
-
-                                    <div formGroupName="specifications">
-                                        <label>Specifications:</label>
-                                        <div>
-                                            <label for="dimensions">Dimensions:</label>
-                                            <input id="dimensions" formControlName="dimensions" type="text">
-                                            <div
-                                                *ngIf="productForm.get('specifications.dimensions')?.invalid && productForm.get('specifications.dimensions')?.touched">
-                                                <small class="error">Dimensions are required.</small>
-                                            </div>
-                                        </div>
-                                        <div>
-                                            <label for="material">Material:</label>
-                                            <input id="material" formControlName="material" type="text">
-                                            <div
-                                                *ngIf="productForm.get('specifications.material')?.invalid && productForm.get('specifications.material')?.touched">
-                                                <small class="error">Material is required.</small>
-                                            </div>
-                                        </div>
-                                        <div>
-                                            <label for="weight">Weight:</label>
-                                            <input id="weight" formControlName="weight" type="text">
-                                            <div
-                                                *ngIf="productForm.get('specifications.weight')?.invalid && productForm.get('specifications.weight')?.touched">
-                                                <small class="error">Weight is required.</small>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div>
-                                        <label for="stock">Stock:</label>
-                                        <input id="stock" formControlName="stock" type="text">
-                                        <div
-                                            *ngIf="productForm.get('stock')?.invalid && productForm.get('stock')?.touched">
-                                            <small class="error">Stock is required.</small>
-                                        </div>
-                                    </div>
-
-                                    <div>
-                                        <label for="vendorContact">Vendor Contact:</label>
-                                        <input id="vendorContact" formControlName="vendorContact" type="email">
-                                        <div
-                                            *ngIf="productForm.get('vendorContact')?.invalid && productForm.get('vendorContact')?.touched">
-                                            <small class="error">Valid email is required.</small>
-                                        </div>
-                                    </div>
-
-                                    <div>
-                                        <label for="vendorId">Vendor ID:</label>
-                                        <input id="vendorId" formControlName="vendorId" type="text">
-                                        <div
-                                            *ngIf="productForm.get('vendorId')?.invalid && productForm.get('vendorId')?.touched">
-                                            <small class="error">Vendor ID is required.</small>
-                                        </div>
-                                    </div>
-
-                                    <div>
-                                        <label for="vendorName">Vendor Name:</label>
-                                        <input id="vendorName" formControlName="vendorName" type="text">
-                                        <div
-                                            *ngIf="productForm.get('vendorName')?.invalid && productForm.get('vendorName')?.touched">
-                                            <small class="error">Vendor Name is required.</small>
-                                        </div>
-                                    </div>
-
-                                    <div>
-                                        <label for="video">Video:</label>
-                                        <input id="video" type="file" accept="video/*" (change)="onVideoChange($event)">
-                                        <div *ngIf="videoPreview">
-                                            <h3>Video Preview:</h3>
-                                            <video [src]="videoPreview" controls
-                                                style="width: 150px; max-height: 100px;"></video>
-                                        </div>
-                                        <div
-                                            *ngIf="productForm.get('video')?.invalid && productForm.get('video')?.touched">
-                                            <small class="text-danger">{{ getVideoError() }}</small>
-                                        </div>
-                                    </div>
-                                    <button type="submit" [disabled]="productForm.invalid">Submit</button>
-                                </form>
-
-                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-
-    <app-newsletter2></app-newsletter2>
-    <app-footer13></app-footer13>
-    <app-scroltop></app-scroltop>
 </div>
