@@ -1,4 +1,4 @@
-import { Component } from '@angular/core'
+import { Component, Inject, OnInit } from '@angular/core'
 import { ClassServiceService } from 'src/app/services/class-service.service'
 import {
   FormBuilder,
@@ -11,8 +11,9 @@ import {
 } from '@angular/forms'
 import { Router } from '@angular/router'
 import { throwError } from 'rxjs'
-import { MatDialog } from '@angular/material/dialog'
+import { MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog'
 import { SuccessDialogComponent } from 'src/app/util/success-dialog/success-dialog.component'
+
 @Component({
   selector: 'app-add-class',
   templateUrl: './add-class.component.html',
@@ -51,6 +52,7 @@ export class AddClassComponent {
     private fb: FormBuilder,
     private class_Service: ClassServiceService,
     private dialog: MatDialog,
+    @Inject(MAT_DIALOG_DATA) public data: any,
   ) {
     this.classForm = this.fb.group({
       className: ['', Validators.required],
@@ -60,6 +62,24 @@ export class AddClassComponent {
       classImage: [null, this.fileValidator],
       isActive: [1],
     })
+  }
+  ngOnInit(): void {
+    // Check if the data passed in contains a teacher object (i.e., the mode is 'edit')
+    if (this.data && this.data.classDetail) {
+      this.classForm.patchValue({
+        className: this.data.classDetail.className,
+        classStudent: this.data.classDetail.students,
+        classSubject: this.data.classDetail.subjects,
+        aboutClass: this.data.classDetail.aboutClass,
+        classImage: this.data.classDetail.classUrl,
+
+        // Assuming this is a base64 string or URL
+      })
+      // If there's an image, you can load it into the images array for preview
+      if (this.data.classDetail.classUrl) {
+        this.images = [this.data.classDetail.classUrl]
+      }
+    }
   }
 
   getControl(value: any) {

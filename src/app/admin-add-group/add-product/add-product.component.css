@@ -36,3 +36,10 @@ button[disabled] {
 .error {
   color: red;
 }
+
+/* Add this style to your CSS */
+.page-content {
+  max-height: calc(100vh - 120px); /* Subtract 500px from the viewport height */
+  overflow-y: auto; /* Enable vertical scrolling */
+  margin-top: 120px; /* Leave 500px space from the top */
+}
