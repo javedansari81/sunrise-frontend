@@ -1,7 +1,9 @@
-import { HttpClient } from '@angular/common/http'
-import { Injectable } from '@angular/core'
-import { Observable, catchError, forkJoin, map, throwError } from 'rxjs'
+import { HttpClient, HttpErrorResponse } from '@angular/common/http'
+
+import { Observable, catchError, forkJoin, map, of, throwError } from 'rxjs'
 import { TeacherService } from './teacher.service'
+
+import { Injectable } from '@angular/core'
 
 @Injectable({
   providedIn: 'root',
@@ -23,44 +25,46 @@ export class EventService {
   }
 
   getEvents(): Observable<any> {
-    return this.http.get<any>(this.eventUrl)
+    return this.http.get<any>(this.apiUrl)
   }
 
-  getEventDetails(): Observable<any[]> {
-    return this.http.get<any[]>(this.eventDetailUrl)
+  getEventById(id: number): Observable<any> {
+    return this.http
+      .get<any[]>(this.apiUrl)
+      .pipe(map((e) => e.find((e) => e._id === id)))
   }
 
-  getEventContents(): Observable<any[]> {
-    return this.http.get<any[]>(this.eventContentUrl)
+  // update and delete event
+
+  updateEvent(event_id: string, event: any): Observable<any> {
+    console.log('evnt', event_id, 'pd', event)
+
+    return this.http
+      .put<any>(`${this.apiUrl}/${event_id}`, event)
+      .pipe(catchError(this.handleError))
   }
 
-  getEventById(eventId: number): Observable<any> {
-    return forkJoin([
-      this.getEvents(),
-      this.getEventDetails(),
-      this.getEventContents(),
-    ]).pipe(
-      catchError((error) => throwError('Failed to fetch event data')),
-      map(([events, eventDetails, eventContents]) => {
-        const event = events.find(
-          (e: { eventId: number }) => e.eventId === eventId,
-        )
-        const eventDetail = eventDetails.find((ed) => ed.eventId === eventId)
-        const eventContentsFiltered = eventContents.filter(
-          (ec) => ec.eventId === eventId,
-        )
+  deleteEvent(event_id: any): Observable<any> {
+    console.log('evntid', typeof event_id)
 
-        if (event && eventDetail && eventContentsFiltered.length > 0) {
-          return {
-            ...event,
-            about: eventDetail.about,
-            highlight: eventDetail.highlight,
-            contents: eventContentsFiltered.map((ec: any) => ec.label),
-          }
-        } else {
-          throw new Error('Event data not found')
-        }
-      }),
+    return this.http
+      .delete<any>(`${this.apiUrl}/${event_id}`)
+      .pipe(catchError(this.handleError))
+  }
+
+  private handleError(error: HttpErrorResponse) {
+    if (error.error instanceof ErrorEvent) {
+      // A client-side or network error occurred
+      console.error('An error occurred:', error.error.message)
+    } else {
+      // The backend returned an unsuccessful response code
+      console.error(
+        `Backend returned code ${error.status}, ` + `body was: ${error.error}`,
+      )
+    }
+    // Return an observable with a user-facing error message
+    return throwError(
+      () => new Error('Something went wrong; please try again later.'),
     )
   }
 }
