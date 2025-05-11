@@ -1,35 +1,22 @@
 <div class="page-wraper">
-  <!-- header -->
+  <!-- Header -->
   <app-header-light7></app-header-light7>
-  <!-- header END -->
-  <!-- Content -->
-  <div class="page-content bg-white">
-    <!-- Slider -->
-    <app-slider2></app-slider2>
-    <!-- END REVOLUTION SLIDER -->
-    <!-- Slider END -->
-    <!-- contact area -->
+  
+  <!-- Content starts after header with no gap -->
+  <div class="page-content bg-white" style="margin-top: 0; padding-top: 0;">
+    <!-- Rest of content -->
     <div class="content-block">
-      <!-- About Us End -->
+      <app-slider2></app-slider2>
       <app-content7></app-content7>
-      <!-- Content Section -->
       <app-content12 [data]="skills"></app-content12>
-      <!-- Our goals -->
       <app-counter2></app-counter2>
-      <!-- Admission Process -->
       <app-content16></app-content16>
-      <!-- Gallary -->
       <app-gallery2></app-gallery2>
-      <!-- Testimonials End -->
       <app-events1></app-events1>
-      <!-- Latest blog END -->
     </div>
-    <!-- contact area END -->
   </div>
-  <!-- Content END -->
+  
   <app-newsletter2></app-newsletter2>
-  <!-- Footer -->
   <app-footer8></app-footer8>
-  <!-- scroltop -->
   <app-scroltop></app-scroltop>
 </div>
